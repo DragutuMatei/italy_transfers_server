@@ -11,6 +11,8 @@ import {
 import testimonials_router from "./src/testimonials/testimonials.js";
 import books_router from "./src/books/book.js";
 import platform_router from "./src/platform/platform.js";
+import 'dotenv/config'
+
 
 const app = express();
 

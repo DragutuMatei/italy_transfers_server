@@ -1,6 +1,6 @@
 import axios from "axios";
 import express from "express";
-import { getUser, updateUser } from "../auth/user_crud.js";
+import 'dotenv/config'
 import { getAllByIds, updateByUid } from "../utils/CRUD.js";
 
 const platform_router = express.Router();
