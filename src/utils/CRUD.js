@@ -12,6 +12,7 @@ const create = async (collection, data) => {
     };
   } catch (error) {
     console.error("Error creating document:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -22,6 +23,7 @@ const createOrUpdate = async (collection, uid, data) => {
     return { success: true, message: "Data saved successfully" };
   } catch (error) {
     console.error("Error creating/updating:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -36,6 +38,7 @@ const getbyUid = async (collection, uid) => {
     return { success: true, user: doc.data() };
   } catch (error) {
     console.error("Error fetching document:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -47,6 +50,7 @@ const updateByUid = async (collection, uid, data) => {
     return { success: true, message: "Data updated successfully" };
   } catch (error) {
     console.error("Error updating:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -58,6 +62,7 @@ const deleteById = async (collection, uid) => {
     return { success: true, message: "Data deleted successfully" };
   } catch (error) {
     console.error("Error deleting:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -76,6 +81,7 @@ const getAll = async (collection) => {
     return { success: true, data };
   } catch (error) {
     console.error("Error fetching documents:", error);
+    console.log(error);
     return { success: false, message: "no" };
   }
 };
@@ -99,6 +105,7 @@ const getAllByField = async (collection, fieldName, fieldValue) => {
     return { success: true, data };
   } catch (error) {
     console.error("Error fetching documents:", error);
+    console.log(error);
     return { success: false, message: "Error fetching documents" };
   }
 };

@@ -11,8 +11,7 @@ import {
 import testimonials_router from "./src/testimonials/testimonials.js";
 import books_router from "./src/books/book.js";
 import platform_router from "./src/platform/platform.js";
-import 'dotenv/config'
-
+import "dotenv/config";
 
 const app = express();
 
@@ -45,7 +44,7 @@ app.use(function (req, res, next) {
 
   const origin =
     origins.includes(req.header("origin").toLowerCase()) && req.headers.origin;
-
+  console.log(origin);
   res.setHeader("Access-Control-Allow-Origin", origin);
 
   // Request methods you wish to allow

@@ -47,6 +47,7 @@ async function generateAccessToken() {
     return response.data.access_token;
   } catch (error) {
     console.error("Eroare 401:", error.response?.data || error.message);
+    console.log(error);
     throw error;
   }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import express from "express";
-import 'dotenv/config'
+import "dotenv/config";
 import { getAllByIds, updateByUid } from "../utils/CRUD.js";
 
 const platform_router = express.Router();
@@ -19,7 +19,7 @@ platform_router.post("/insert", async (req, res) => {
         },
       }
     );
-
+    console.log("api_to_nccgest.data: ", api_to_nccgest.data);
     res.status(200).json({
       success: true,
       message: "Platform data inserted successfully",

@@ -11,21 +11,38 @@ router.post("/saveUser", async (req, res) => {
 
   console.log("Saving user data for UID:", uid, "Data:", userData);
   if (!uid || !userData) {
-    return res.status(404).json({ error: "Missing uid or userData" });
+    return res.status(400).json({ error: "Missing uid or userData" });
   }
 
   try {
-    const newuser = await getUser(uid);
+    const existingUser = await getUser(uid);
     let result;
-    if (!newuser.success) {
+
+    if (!existingUser.success) {
+      // New user - create with books array
       result = await createOrUpdateUser(uid, { ...userData, books: [] });
+      console.log("Created new user:", uid);
     } else {
+      // Existing user - update
       result = await createOrUpdateUser(uid, userData);
+      console.log("Updated existing user:", uid);
     }
 
-    res.status(200).json({ ...result, newuser: user.user });
+    // Get the saved user data to return
+    const savedUser = await getUser(uid);
+
+    res.status(200).json({
+      ...result,
+      user: savedUser.success ? savedUser.user : userData,
+      success: true,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error saving user:", error);
+    res.status(500).json({
+      error: "Failed to save user",
+      message: error.message,
+      success: false,
+    });
   }
 });
 
@@ -35,10 +52,26 @@ router.get("/getUserInfo/:uid", async (req, res) => {
   console.log("Fetching user info for UID:", uid);
   try {
     const result = await getUser(uid);
-    console.log(result);
+    console.log("User fetch result:", result);
+
+    if (!result.success) {
+      console.log("User not found in database:", uid);
+      return res.status(404).json({
+        error: "User not found",
+        message: result.message,
+        success: false,
+      });
+    }
+
+    console.log("User found successfully:", uid);
     res.status(200).json(result);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    console.error("Error in getUserInfo:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      message: error.message,
+      success: false,
+    });
   }
 });
 
