@@ -35,12 +35,13 @@ app.use(express.json());
 
 app.use(function (req, res, next) {
   const origins = [
-    "http://localhost:3002",
-    "http://localhost:3000",
-    "http://localhost:3003",
+    // "http://localhost:3002",
+    // "http://localhost:3000",
+    // "http://localhost:3003",
     "https://dvchauffeurs.netlify.app",
     "https://admindvchauffeurs.netlify.app",
-    "https://trevi-chauffeurs.com"
+    "https://trevi-chauffeurs.com",
+    "https://admin.trevi-chauffeurs.com"
   ];
 
   const origin =
