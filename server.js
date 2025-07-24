@@ -40,6 +40,7 @@ app.use(function (req, res, next) {
     "http://localhost:3003",
     "https://dvchauffeurs.netlify.app",
     "https://admindvchauffeurs.netlify.app",
+    "http://trevi-chauffeurs.com"
   ];
 
   const origin =
