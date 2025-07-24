@@ -3,28 +3,8 @@ import qs from "qs";
 const base = "https://api-m.sandbox.paypal.com";
 
 async function generateAccessToken() {
-  //   const response = await axios({
-  //     url: `${base}/v1/oauth2/token`,
-  //     method: "post",
-  //     auth: {
-  //       username:
-  //         "ATGD0nMPVoEctXsyGZsTszt6VHsIMmEp54BzqBGwd-_3XmYih4eUV5LPxeiebWIDpBXchzuChHCy7vqk",
-  //       password:
-  //         "EHhTRSn4Q7LlY2uZz8bWfx3f0L7D95izKS-i1_D-xcYqVzj-2Tfw-_-BJaLbDXzMK80wGaVinTbK3_v5",
-  //     },
-  //     params: {
-  //       grant_type: "client_credentials",
-  //     },
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //   });
-  //   console.log(response.data);
-  //   return response.data.access_token;
-  const clientId =
-    "Abc1qcTR-6AiaKiVXlB3HD57txyW9Aiq5mDpb-Mh_7pqSTP7hBVdmUKV7wCSYFtjX5BcXDQGKjtf1nvg";
-  const clientSecret =
-    "EDg7kFAWIscuIfVWz4a4rQjcywnDWvkDsKVdq_8mWdoy6oWE_iJ_65zfq4TjOASI5J2KPC6ZxXrkTn15";
+  const clientId = process.env.PAYPAL_CLIENT_ID;
+  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
     "base64"
