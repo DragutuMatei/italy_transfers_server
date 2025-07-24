@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs";
-const base = "https://api-m.sandbox.paypal.com";
+const base = "https://api-m.paypal.com";
 
 async function generateAccessToken() {
   const clientId = process.env.PAYPAL_CLIENT_ID;
@@ -35,7 +35,7 @@ async function generateClientToken() {
   const accessToken = await generateAccessToken();
 
   const response = await axios({
-    url: "https://api-m.sandbox.paypal.com/v1/identity/generate-token",
+    url: "https://api-m.paypal.com/v1/identity/generate-token",
     method: "post",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -121,7 +121,7 @@ async function createAndSendInvoice(payerEmail, fullName, amount) {
 
   // 1. Creare factură
   const createResp = await axios.post(
-    "https://api-m.sandbox.paypal.com/v2/invoicing/invoices",
+    "https://api-m.paypal.com/v2/invoicing/invoices",
     invoiceData,
     {
       headers: {
@@ -135,7 +135,7 @@ async function createAndSendInvoice(payerEmail, fullName, amount) {
 
   // 2. Trimitere factură
   await axios.post(
-    `https://api-m.sandbox.paypal.com/v2/invoicing/invoices/${invoiceId}/send`,
+    `https://api-m.paypal.com/v2/invoicing/invoices/${invoiceId}/send`,
     {},
     {
       headers: {
