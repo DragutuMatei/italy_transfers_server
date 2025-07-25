@@ -23,7 +23,6 @@ async function generateAccessToken() {
       }),
     });
 
-    // console.log("Access Token:", response.data.access_token);
     return response.data.access_token;
   } catch (error) {
     console.error("Eroare 401:", error.response?.data || error.message);
@@ -35,7 +34,7 @@ async function generateClientToken() {
   const accessToken = await generateAccessToken();
 
   const response = await axios({
-    url: "https://api-m.paypal.com/v1/identity/generate-token",
+    url: `${base}/v1/identity/generate-token`,
     method: "post",
     headers: {
       Authorization: `Bearer ${accessToken}`,

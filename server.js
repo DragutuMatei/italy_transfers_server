@@ -11,7 +11,12 @@ import {
 import testimonials_router from "./src/testimonials/testimonials.js";
 import books_router from "./src/books/book.js";
 import platform_router from "./src/platform/platform.js";
+import newsletter_router from "./src/newsletters.js";
 import "dotenv/config";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
+import xss from "xss-clean";
 
 const app = express();
 
@@ -33,47 +38,52 @@ app.use(bodyParser.text({ limit: "1500mb" }));
 
 app.use(express.json());
 
-app.use(function (req, res, next) {
-  const origins = [
-    // "http://localhost:3002",
-    // "http://localhost:3000",
-    // "http://localhost:3003",
-    "https://dvchauffeurs.netlify.app",
-    "https://admindvchauffeurs.netlify.app",
-    "https://trevi-chauffeurs.com",
-    "https://admin.trevi-chauffeurs.com"
-  ];
+// Helmet pentru headers de securitate
+app.use(helmet());
 
-  const origin =
-    origins.includes(req.header("origin").toLowerCase()) && req.headers.origin;
-  console.log(origin);
-  res.setHeader("Access-Control-Allow-Origin", origin);
+// xss-clean pentru protecție XSS
+app.use(xss());
 
-  // Request methods you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
+// CORS strict
+const allowedOrigins = [
+  "http://localhost:3002",
+  "http://localhost:3000",
+  "http://localhost:3003",
+  "https://dvchauffeurs.netlify.app",
+  "https://admindvchauffeurs.netlify.app",
+  "https://trevi-chauffeurs.com",
+  "https://admin.trevi-chauffeurs.com",
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permite requests fără origin (ex: curl, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
-  // Request headers you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader("Access-Control-Allow-Credentials", true);
-
-  // Pass to next layer of middleware
-  next();
+// Rate limiting global (100 requests/15min per IP)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
+app.use(limiter);
 
 app.use("/api", router);
 app.use("/contact", contact_router);
 app.use("/testimonials", testimonials_router);
 app.use("/books", books_router);
 app.use("/platform", platform_router);
+app.use("/api/newsletter", newsletter_router);
 
 app.post("/create-order", async (req, res) => {
   const total = req.body.total || "10.00";
