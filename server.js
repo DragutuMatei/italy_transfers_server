@@ -71,8 +71,8 @@ app.use(
 
 // Rate limiting global (100 requests/15min per IP)
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 10 * 60 * 1000,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -92,10 +92,6 @@ app.post("/create-order", async (req, res) => {
 });
 
 app.post("/capture-order", async (req, res) => {
-  // const { orderId } = req.body;
-  // console.log("orderId: ", orderId);
-  // const captured = await captureOrder(orderId);
-  // res.json(captured);
 
   const { orderId } = req.body;
   const captured = await captureOrder(orderId);
